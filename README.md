@@ -1,60 +1,146 @@
-# Usage
-Please refer to the InProd changeset documentation for details on how changesets can manage the Genesys Engage platform. To Learn more about Genesys DevOps and configuration management vist https://www.inprod.io
+# InProd Ansible Collection for Genesys Cloud
 
+![Tests](https://github.com/inprod/ansible_genesys/actions/workflows/tests.yml/badge.svg)
+![License](https://img.shields.io/badge/license-AGPL--3.0-blue)
+![Python](https://img.shields.io/badge/python-3.8%2B-blue)
+![Ansible](https://img.shields.io/badge/ansible-%3E%3D2.9-blue)
+![Version](https://img.shields.io/badge/collection-2.1.0-green)
 
-# Installation
+## Description
 
-Clone the repo locally
+This collection provides an Ansible module for managing Genesys Cloud configuration through [InProd](https://www.inprod.io) changesets. Unlike limited tools such as the Genesys Cloud CLI tool Archy, This module can apply configuration changes across all object types within Genesys Cloud and it not limited in scope such as the Genesys Cloud cli tool 'Archy'.
+
+Designed for use within CI/CD pipelines, this collection enables Genesys Cloud configuration to be stored in version control and deployed across multiple Genesys Cloud environments using orchestration tools such as Jenkins, GitHub Actions, or similar platforms.
+
+### Workflow
+
+1. **Design** the changeset within InProd and validate it against each target Genesys Cloud environment. Using variables and queries, all environment differences and naming conventions can be catered for.
+2. **Export** the changeset as JSON or YAML and check it into version control.
+3. **Deploy** using your standard CI/CD workflow for testing and approval, using this Ansible module to execute the change from version control.
+
+Please refer to the [InProd documentation](https://www.inprod.io) for details on how changesets can manage the Genesys Cloud platform.
+
+### Modules
+
+| Name | Description |
+|------|-------------|
+| `inprod.genesys_cloud.changeset` | Validate and execute InProd changesets against Genesys Cloud environments |
+
+The `changeset` module supports the following actions:
+
+| Action | Description |
+|--------|-------------|
+| `validate` | Validate a changeset by passing in the changeset ID |
+| `validate_json` | Validate a changeset supplied as JSON data |
+| `validate_yaml` | Validate a changeset supplied as YAML data |
+| `execute` | Execute a changeset by passing in the changeset ID |
+| `execute_json` | Execute a changeset supplied as JSON data |
+| `execute_yaml` | Execute a changeset supplied as YAML data |
+
+## Requirements
+
+- Python 3.8+
+- Ansible >= 2.9
+
+## Installation
+
+### From Source (Development)
+
+Clone the repository:
+
+```bash
+git clone https://github.com/inprod/ansible_genesys.git
+cd ansible_genesys
 ```
-git clone git://github.com/inprod/ansible_genesys.git
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
 ```
 
-## Module Install
-Ansible must be made aware of this new module. There are multiple ways of
-doing this depending on your requirements and environment.
+## Usage
 
-* Ansible configuration file: `ansible.cfg`
-* Environment variable: `ANSIBLE_LIBRARY`
-* Command line parameter: `ansible-playbook --module-path [path]`
+### Basic Usage
 
-### Updating Ansible configuration
-The preferred method of installation is to update the Ansible configuration with the module path. To include the path globally for all users, edit the /etc/ansible/ansible.cfg file and add library = `/path/to/module/` under the `[default]` section. For example:
+```yaml
+- name: Validate a changeset
+  inprod.genesys_cloud.changeset:
+    host: 'your-company.inprod.io'
+    action: 'validate'
+    api_key: '{{ vault_inprod_api_key }}'
+    changeset_id: '125'
+    ssl: true
 
-```
-[default]
-library = /path/to/ansible_genesys/inprod
-```
-
-Note that the Ansible configuration file is read from several locations in the following order:
-
-1. `ANSIBLE_CONFIG` environment variable path
-1. `ansible.cfg` from the current directory
-1. `.ansible.cfg` in the user home directory
-1. `/etc/ansible/ansible.cfg`
-
-
-### Ansible command line parameter
-The module path can be overridden with an ansible-playbook command line parameter:
-
-```
-ansible-playbook --module-path /path/to/ansible_genesys/inprod playbook.yml
+- name: Execute a changeset
+  inprod.genesys_cloud.changeset:
+    host: 'your-company.inprod.io'
+    action: 'execute'
+    api_key: '{{ vault_inprod_api_key }}'
+    changeset_id: '125'
+    ssl: true
 ```
 
-# Development
+### Using Ansible Vault
 
-## Python 3
-1. python3 -m venv .
-1. curl https://bootstrap.pypa.io/get-pip.py | bin/python
-1. bin/pip install ansible
+Store your API key securely with Ansible Vault:
 
-## Python 2.7
-1. easy_install pip
-1. pip install virtualenv
-1. virtualenv -p /usr/bin/python2.7 .
-1. bin/pip install ansible
+```bash
+ansible-vault create group_vars/all/vault.yml
+```
 
+Then reference in your playbook:
 
-## Running tests
-* bin/ansible-playbook ./inprod.yml -vvv
-* bin/python inprod.py args.json -vvv
-* The `-vvv` flag will display a full stack trace which is needed for debugging
+```yaml
+- name: Execute changeset with vault
+  inprod.genesys_cloud.changeset:
+    host: '{{ inprod_host }}'
+    action: 'execute'
+    api_key: '{{ vault_inprod_api_key }}'
+    changeset_id: '{{ changeset_id }}'
+    ssl: true
+```
+
+## Development
+
+### Setup Development Environment
+
+```bash
+python3 -m venv .
+source bin/activate  # On Windows: .\Scripts\Activate.ps1
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+### Running Tests
+
+Unit tests:
+
+```bash
+pytest tests/unit/ -v
+```
+
+Integration tests:
+
+```bash
+ansible-playbook tests/integration/targets/inprod/main.yml -vvv
+```
+
+### Building the Collection
+
+```bash
+ansible-galaxy collection build
+```
+
+This creates a tarball that can be distributed or published to Ansible Galaxy.
+
+## License
+
+AGPL-3.0 - see [LICENSE](LICENSE) for details.
+
+## Trademark & Affiliation
+
+Genesys® and Genesys Cloud™ are trademarks of [Genesys](https://www.genesys.com). 
+This project is not affiliated with, endorsed by, or sponsored by Genesys.
+
+All other trademarks are the property of their respective owners.

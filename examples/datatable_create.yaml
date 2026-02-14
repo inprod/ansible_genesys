@@ -1,0 +1,40 @@
+---
+- name: Test InProd Changesets
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    inprod_host: '--'
+    changeset_id: '6'
+    vault_inprod_api_key: '--'
+
+  tasks:
+
+    - name: Create Flow Datatable from JSON file
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'execute_json'
+        api_key: "{{ vault_inprod_api_key }}"
+        file_path: 'datatable.json'
+        ssl: false
+        validate_certs: true
+      register: json_execute_result
+
+    - name: Display JSON execution result
+      debug:
+        msg: "{{ json_execute_result.msg }}"
+
+
+    - name: Create Flow Datatable from YAML file
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'execute_yaml'
+        api_key: "{{ vault_inprod_api_key }}"
+        file_path: 'datatable.yaml'
+        ssl: false
+        validate_certs: true
+      register: yaml_execute_result
+
+    - name: Display YAML execution result
+      debug:
+        msg: "{{ yaml_execute_result.msg }}"

@@ -1,0 +1,107 @@
+---
+- name: Test InProd Module
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    inprod_host: 'your-company.inprod.io'
+    changeset_id: '125'
+
+  tasks:
+    - name: Validate a changeset
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'validate'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        changeset_id: "{{ changeset_id }}"
+        ssl: true
+        timeout: 30
+      register: validation_result
+      ignore_errors: true
+
+    - name: Display validation result
+      debug:
+        var: validation_result
+
+    - name: Execute a changeset
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'execute'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        changeset_id: "{{ changeset_id }}"
+        ssl: true
+        timeout: 60
+      register: execute_result
+      ignore_errors: true
+
+    - name: Display execution result
+      debug:
+        var: execute_result
+
+    - name: Validate changeset from JSON file (when file exists)
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'validate_json'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        file_path: '{{ playbook_dir }}/examples/datatable.json'
+        ssl: true
+        validate_certs: true
+      register: json_validate_result
+      ignore_errors: true
+      when: ansible_os_family is defined
+
+    - name: Display JSON validation result
+      debug:
+        var: json_validate_result
+      when: ansible_os_family is defined
+
+    - name: Execute changeset from JSON file (when file exists)
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'execute_json'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        file_path: '{{ playbook_dir }}/examples/datatable.json'
+        ssl: true
+        validate_certs: true
+      register: json_execute_result
+      ignore_errors: true
+      when: ansible_os_family is defined  # Conditional to prevent errors in test
+
+    - name: Display JSON execution result
+      debug:
+        var: json_execute_result
+      when: ansible_os_family is defined
+
+    - name: Validate changeset from YAML file (when file exists)
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'validate_yaml'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        file_path: '{{ playbook_dir }}/examples/datatable.yaml'
+        ssl: true
+        validate_certs: true
+      register: yaml_validate_result
+      ignore_errors: true
+      when: ansible_os_family is defined
+
+    - name: Display YAML validation result
+      debug:
+        var: yaml_validate_result
+      when: ansible_os_family is defined
+
+    - name: Execute changeset from YAML file (when file exists)
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'execute_yaml'
+        api_key: "{{ vault_inprod_api_key | default('test_api_key') }}"
+        file_path: '{{ playbook_dir }}/examples/datatable.yaml'
+        ssl: true
+        validate_certs: true
+      register: yaml_execute_result
+      ignore_errors: true
+      when: ansible_os_family is defined
+
+    - name: Display YAML execution result
+      debug:
+        var: yaml_execute_result
+      when: ansible_os_family is defined

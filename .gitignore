@@ -1,14 +1,25 @@
-
-ansible\.cfg
-
+# Python virtual environment
 bin/
-
-pyvenv\.cfg
-
 lib/
-
+lib64/*
 include/
+pyvenv.cfg
 
-args\.json
+# Python bytecode
+__pycache__/
+*.pyc
 
-inprod\.retry
+# Pytest
+.pytest_cache/
+
+# Ansible
+ansible.cfg
+args.json
+*.retry
+*.tar.gz
+
+# Local testing (may contain secrets)
+testing.yaml
+
+# IDE / tools
+.claude/

@@ -1,0 +1,19 @@
+---
+namespace: inprod
+name: genesys_cloud
+version: 2.0.0
+readme: README.md
+authors:
+  - InProd Solutions Pty Ltd
+description: Ansible collection for managing Genesys Cloud platform via InProd changesets
+license:
+  - AGPL-3.0-only
+repository: https://github.com/inprod/ansible_genesys
+documentation: https://github.com/inprod/ansible_genesys
+issues: https://github.com/inprod/ansible_genesys/issues
+tags:
+  - genesys
+  - inprod
+  - changeset
+  - configuration
+  - management

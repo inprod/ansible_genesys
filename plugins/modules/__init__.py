@@ -1,0 +1,1 @@
+"""InProd Genesys Ansible Collection."""
