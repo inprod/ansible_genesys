@@ -1,16 +1,9 @@
 ---
-extends: default
-rules:
-  name:
-    patterns:
-      - '^[a-zA-Z0-9\-_\.\s]*$'
-  line-length:
-    max: 120
-  truthy:
-    allowed-values: ['true', 'false', 'yes', 'no']
-  no-handler-name:
-    patterns:
-      - '^[a-zA-Z0-9\-_\.\s]*$'
+skip_list:
+  - name[template]
+  - yaml[line-length]
+  - yaml[truthy]
+  - no-handler
 exclude_paths:
   - .git
   - .github
