@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-AGPL--3.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Ansible](https://img.shields.io/badge/ansible-%3E%3D2.9-blue)
-![Version](https://img.shields.io/badge/collection-2.1.0-green)
+![Version](https://img.shields.io/badge/collection-2.0.0-green)
 
 ## Description
 
