@@ -8,7 +8,7 @@
 
 ## Description
 
-This collection provides an Ansible module for managing Genesys Cloud configuration through [InProd](https://www.inprod.io) changesets. Unlike limited tools such as the Genesys Cloud CLI tool Archy, This module can apply configuration changes across all object types within Genesys Cloud and it not limited in scope such as the Genesys Cloud cli tool 'Archy'.
+This collection provides an Ansible module for managing Genesys Cloud configuration through [InProd](https://www.inprod.io) changesets. This module can apply configuration changes across all object types within Genesys Cloud and it is not limited in scope such as the Genesys Cloud CLI tool 'Archy'.
 
 Designed for use within CI/CD pipelines, this collection enables Genesys Cloud configuration to be stored in version control and deployed across multiple Genesys Cloud environments using orchestration tools such as Jenkins, GitHub Actions, or similar platforms.
 
