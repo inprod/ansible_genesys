@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-02-17
+
+### Changed
+- All validate and execute operations now run as background tasks with automatic polling for results
+- Replaced synchronous response parsing with task-based polling via `GET /api/v1/task-status/{task_id}/`
+
+### Added
+- New `environment` parameter to override the target environment for a changeset
+- Accepts environment ID (integer) or environment name (string, case insensitive)
+- Takes precedence over the environment field defined in the changeset payload
+- Useful for CI/CD workflows where the same changeset is promoted through environments (e.g., dev, staging, production)
+- New `poll_interval` parameter to control seconds between task status polls (default: 5)
+- New `max_poll_time` parameter to set maximum wait time for task completion (default: 600 seconds)
+- `_extract_task_id()` method for extracting task IDs from API responses
+- `_poll_task()` method for polling the task status endpoint
+- `_handle_task_result()` method for coordinating polling and result parsing
+- `_parse_task_validation_result()` for parsing async validation results
+- `_parse_task_execute_result()` for parsing async execution results
+
+### Removed
+- `_parse_validation_response()` — replaced by `_parse_task_validation_result()`
+- `_parse_execute_response()` — replaced by `_parse_task_execute_result()`
+
 ## [2.0.0] - 2026-02-13
 
 ### Changed

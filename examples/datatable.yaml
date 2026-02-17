@@ -8,7 +8,7 @@ action:
     name: Architect Flow Datatable Sample
     records:
     - key: '111'
-      record: '{"1": true, "2": "asdfasf", "3": 0, "4": 0}'
+      record: '{"1": true, "2": "sadsa", "3": 0, "4": 0}'
     referenceKeyLabel: changethis
     schemaProperties:
     - default: '0'
@@ -38,8 +38,8 @@ action:
   iterator_script_searches: []
   object_lookup: null
   object_type: GenCloudFlowsDatatables
-enforcing: false
-environment: 1
+enforcing: true
+environment: 99
 name: Genesys Cloud - Architect Flow Datatable Creation
 run_in_background: false
 run_type: stop

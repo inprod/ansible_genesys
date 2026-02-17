@@ -4,16 +4,32 @@
   gather_facts: false
 
   vars:
-    inprod_host: '--'
+    inprod_host: 'sample.com'
     changeset_id: '6'
-    vault_inprod_api_key: '--'
+    vault_inprod_api_key: '8e...' # example only, do not use
 
   tasks:
+
+    - name: validate changeset from JSON file (when file exists)
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'validate_json'
+        api_key: "{{ vault_inprod_api_key }}"
+        environment: 'dev'
+        file_path: 'datatable.json'
+        ssl: false
+        validate_certs: true
+      register: json_validate_result
+
+    - name: Display JSON validation result
+      debug:
+        msg: "{{ json_validate_result.msg }}"
 
     - name: Create Flow Datatable from JSON file
       inprod.genesys_cloud.changeset:
         host: "{{ inprod_host }}"
         action: 'execute_json'
+        environment: 'dev'
         api_key: "{{ vault_inprod_api_key }}"
         file_path: 'datatable.json'
         ssl: false
@@ -24,11 +40,26 @@
       debug:
         msg: "{{ json_execute_result.msg }}"
 
+    - name: validate changeset from YAML file 
+      inprod.genesys_cloud.changeset:
+        host: "{{ inprod_host }}"
+        action: 'validate_yaml'
+        api_key: "{{ vault_inprod_api_key }}"
+        environment: 'dev'
+        file_path: 'datatable.yaml'
+        ssl: false
+        validate_certs: true
+      register: yaml_validate_result
+
+    - name: Display YAML validation result
+      debug:
+        msg: "{{ yaml_validate_result.msg }}"
 
     - name: Create Flow Datatable from YAML file
       inprod.genesys_cloud.changeset:
         host: "{{ inprod_host }}"
         action: 'execute_yaml'
+        environment: 'dev'
         api_key: "{{ vault_inprod_api_key }}"
         file_path: 'datatable.yaml'
         ssl: false

@@ -17,9 +17,10 @@ ansible.cfg
 args.json
 *.retry
 *.tar.gz
+.ansible/
 
 # Local testing (may contain secrets)
-testing.yaml
+full-test.yaml
 
 # IDE / tools
 .claude/

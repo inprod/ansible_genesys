@@ -56,8 +56,8 @@
       "object_type": "GenCloudFlowsDatatables"
     }
   ],
-  "enforcing": false,
-  "environment": 1,
+  "enforcing": true,
+  "environment": 99,
   "name": "Genesys Cloud - Architect Flow Datatable Creation",
   "run_in_background": false,
   "run_type": "stop",

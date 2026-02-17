@@ -4,7 +4,7 @@
 ![License](https://img.shields.io/badge/license-AGPL--3.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![Ansible](https://img.shields.io/badge/ansible-%3E%3D2.9-blue)
-![Version](https://img.shields.io/badge/collection-2.0.0-green)
+![Version](https://img.shields.io/badge/collection-2.1.0-green)
 
 ## Description
 
@@ -78,6 +78,30 @@ pip install -r requirements.txt
     action: 'execute'
     api_key: '{{ vault_inprod_api_key }}'
     changeset_id: '125'
+    ssl: true
+```
+
+### Overriding the Target Environment
+
+The `environment` parameter allows you to override the target environment defined in the changeset. This accepts either an environment ID (integer) or name (string, case insensitive), and is particularly useful for CI/CD workflows where the same changeset is promoted through multiple environments.
+
+```yaml
+- name: Execute changeset against environment by ID
+  inprod.genesys_cloud.changeset:
+    host: 'your-company.inprod.io'
+    action: 'execute_json'
+    api_key: '{{ vault_inprod_api_key }}'
+    file_path: '/path/to/changeset.json'
+    environment: 3
+    ssl: true
+
+- name: Execute changeset against environment by name
+  inprod.genesys_cloud.changeset:
+    host: 'your-company.inprod.io'
+    action: 'execute_yaml'
+    api_key: '{{ vault_inprod_api_key }}'
+    file_path: '/path/to/changeset.yml'
+    environment: 'Production'
     ssl: true
 ```
 
